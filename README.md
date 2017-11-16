@@ -44,5 +44,7 @@ DESCRIPTION
 
 TUTORIAL & INFO:
 http://rachid.koucha.free.fr/tech_corner/pty_pdip_fr.html
+
 http://jdb.github.io/pty.html
-![alt text](https://fr.wikipedia.org/wiki/Pseudo_terminal#/media/File:Termios-script-diagram.png)
+
+<img src="https://fr.wikipedia.org/wiki/Pseudo_terminal#/media/File:Termios-script-diagram.png"/>
