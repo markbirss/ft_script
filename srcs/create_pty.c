@@ -15,7 +15,7 @@
 int        create_pty(int *fd_master, int *fd_slave)
 {
     //ouvre un pty et return le fd
-    *fd_master =  posix_openpt(O_RDWR);
+    *fd_master =  ft_posix_openpt(O_RDWR);
     if (*fd_master < 0)
         return (-1);
     //change les droits du pty
