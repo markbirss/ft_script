@@ -27,4 +27,8 @@ char	            *ft_mmap_strdup(const char *s1);
 int                 create_pty(int *fd_master, int *fd_slave);
 void                get_shell(t_env *env, char **envp);
 int                 ft_posix_openpt(int flags);
+char                *ft_ptsname(int fd);
+int                 ft_grantpt(int fd);
+int                 ft_unlockpt(int fd);
+
 #endif

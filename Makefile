@@ -3,7 +3,8 @@ NAME =	ft_script
 
 SRCS = 	srcs/main.c srcs/ft_script.c srcs/get_params.c srcs/ft_mmap.c \
 		srcs/ft_mmap_strdup.c srcs/create_pty.c srcs/get_shell.c \
-		srcs/ft_posix_openpt.c
+		srcs/ft_posix_openpt.c srcs/ft_ptsname.c srcs/ft_grantpt.c \
+		srcs/ft_unlockpt.c
 
 OBJS = 	$(patsubst srcs/%.c, objs/%.o, $(SRCS))
 

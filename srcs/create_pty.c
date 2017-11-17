@@ -6,25 +6,22 @@
 /**
  * TODO
  * re-code :
- * - openpt
- * - granpt
- * - unlockpt
- * - ptsname
+ * - openpt OK
+ * - granpt TODO
+ * - unlockpt TODO
+ * - ptsname NOT WORKING
 **/
 
 int        create_pty(int *fd_master, int *fd_slave)
 {
-    //ouvre un pty et return le fd
     *fd_master =  ft_posix_openpt(O_RDWR);
     if (*fd_master < 0)
         return (-1);
-    //change les droits du pty
-    if ((grantpt(*fd_master)) != 0)
+    if ((ft_grantpt(*fd_master)) != 0)
         return (-1);
-    //deverouille pty
-    if ((unlockpt(*fd_master)) != 0)
+    if ((ft_unlockpt(*fd_master)) != 0)
         return (-1);
-    //ouverture tu pty esclave
-    *fd_slave = open(ptsname(*fd_master), O_RDWR);
+    if ((*fd_slave = open(ft_ptsname(*fd_master), O_RDWR)) == -1)
+        return (-1);
     return (0);
 }
