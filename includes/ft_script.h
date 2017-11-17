@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include "../libft/includes/libft.h"
 
+# define OPEN_MODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
+
 typedef struct		s_env {
 	char			*bash;
 	char			*filename;

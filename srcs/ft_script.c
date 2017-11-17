@@ -114,9 +114,9 @@ void				ft_script(t_env *env)
 	int				fd_file;
 
 	if (env->opt_a == 1)
-		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_APPEND);
+		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_APPEND, OPEN_MODE);
 	else
-		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_TRUNC);
+		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_TRUNC, OPEN_MODE);
 	if (create_pty(&fd_master, &fd_slave) == -1)
 		return ;
 	if (!fd_file || !fd_master || !fd_slave)
