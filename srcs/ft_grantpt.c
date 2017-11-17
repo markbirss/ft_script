@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_grantpt.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/17 13:43:26 by mfrisby           #+#    #+#             */
+/*   Updated: 2017/11/17 13:43:50 by mfrisby          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_script.h"
 #include <sys/ioctl.h>
 
-int     ft_grantpt(int fd)
+int		ft_grantpt(int fd)
 {
-    return ioctl(fd, TIOCPTYGRANT);
+	return (ioctl(fd, TIOCPTYGRANT));
 }
