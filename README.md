@@ -4,10 +4,14 @@
 TODO:
 
      - MSG_START && MSG_END doivent être affichés apres le lancement du fork()
+     
      - Les commandes tappées par l'utilisateur sont repétées, ça ne devrait pas
+     
      - Le ctrl-c doit quitter le programme en cours mais pas script
-     - La deletion de caractère doit apparaitre dans le fichier
-     - Un diff des fichiers générés par l'original et le ft doivent être identique exepté les timestamp
+     
+     - La deletion de caractère doit apparaitre dans le fichier
+     
+     - Un diff des fichiers générés par l'original et le ft doivent être identique exepté les timestamp
 
 DESCRIPTION
      The script utility makes a typescript of everything printed on your ter-
