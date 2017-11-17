@@ -40,3 +40,14 @@ DESCRIPTION
              Specify the interval at which the script output file will be
              flushed to disk, in seconds.  A value of 0 causes script to flush
              after every character I/O event.  The default interval is 30 sec-
+
+
+TUTORIAL & INFO:
+
+http://rachid.koucha.free.fr/tech_corner/pty_pdip_fr.html
+
+http://jdb.github.io/pty.html
+
+https://fr.wikipedia.org/wiki/Pseudo_terminal
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Termios-script-diagram.png/1280px-Termios-script-diagram.png"/>
