@@ -26,7 +26,7 @@ void		get_shell(t_env *env, char **envp)
 			while (*ret != '=')
 				ret++;
 			ret++;
-			env->bash = ft_strdup(ret);
+			env->bash = ft_mmap_strdup(ret);
 		}
 		i++;
 	}

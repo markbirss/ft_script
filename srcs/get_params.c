@@ -71,7 +71,8 @@ int				get_params(int ac, char **av, t_env **env)
 		(*env)->filename = ft_mmap_strdup("typescript");
 	if (i < ac)
 	{
-		(*env)->command = ft_mmap(sizeof(char*) * ((ac) - i + 1));
+		(*env)->command = ft_mmap(sizeof(char*) * (ac - i + 1));
+		(*env)->cmd_size = ac - i + 1;
 		while (i < ac)
 		{
 			(*env)->command[y] = ft_mmap_strdup(av[i]);

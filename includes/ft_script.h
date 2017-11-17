@@ -22,6 +22,7 @@ typedef struct		s_env {
 	char			*bash;
 	char			*filename;
 	char			**command;
+	int				cmd_size;
 	int				opt_a;
 	int				opt_d;
 	int				opt_f;
