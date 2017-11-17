@@ -113,7 +113,10 @@ void				ft_script(t_env *env)
 	int				fd_slave;
 	int				fd_file;
 
-	fd_file = open("./typescript", O_CREAT | O_WRONLY | O_TRUNC);
+	if (env->opt_a == 1)
+		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_APPEND);
+	else
+		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_TRUNC);
 	if (create_pty(&fd_master, &fd_slave) == -1)
 		return ;
 	if (!fd_file || !fd_master || !fd_slave)
