@@ -104,7 +104,10 @@ static void			fork_child(int fd_master, int fd_slave, t_env *env)
 	ioctl(0, TIOCSCTTY, 1);
 	args[0] = "zsh";
 	args[1] = NULL;
-	rc = execvp(env->bash, args);
+	if (env->command == NULL)
+		rc = execvp(env->bash, args);
+	else
+		rc = execvp(env->command[0], env->command);
 }
 
 void				ft_script(t_env *env)

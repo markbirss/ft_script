@@ -52,8 +52,10 @@ static int		parse_simple_param(char *s, t_env **env)
 int				get_params(int ac, char **av, t_env **env)
 {
 	int			i;
+	int			y;
 
 	i = 1;
+	y = 0;
 	while (i < ac && av[i] && av[i][0] == '-')
 	{
 		if (parse_simple_param((av[i]) + 1, env) == -1)
@@ -65,7 +67,18 @@ int				get_params(int ac, char **av, t_env **env)
 		(*env)->filename = ft_mmap_strdup(av[i]);
 		i++;
 	}
-	else
+	else if (ac == i)
 		(*env)->filename = ft_mmap_strdup("typescript");
+	if (i < ac)
+	{
+		(*env)->command = ft_mmap(sizeof(char*) * ((ac) - i + 1));
+		while (i < ac)
+		{
+			(*env)->command[y] = ft_mmap_strdup(av[i]);
+			i++;
+			y++;
+		}
+		(*env)->command[y] = NULL;
+	}
 	return (i);
 }

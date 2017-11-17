@@ -21,7 +21,7 @@
 typedef struct		s_env {
 	char			*bash;
 	char			*filename;
-	char			*command;
+	char			**command;
 	int				opt_a;
 	int				opt_d;
 	int				opt_f;
