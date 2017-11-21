@@ -88,7 +88,7 @@ static void fork_child(int fd_master, int fd_slave, t_env *env)
 	setsid();
 	ioctl(0, TIOCSCTTY, 1);
 	if (env->command != NULL)
-		execvp(env->command[0], env->command);
+		execve(env->command[0], env->command, NULL);
 }
 
 void ft_script(t_env *env)
@@ -105,13 +105,8 @@ void ft_script(t_env *env)
 		fd_file = open(env->filename, OPEN_FLAGS | O_TRUNC, OPEN_MODE);
 	if (create_pty(&fd_master, &fd_slave) == -1)
 		return;
-	if (!fd_file || !fd_master || !fd_slave)
+	if (!fd_file || !fd_master || !fd_slave || (pid = fork()) < 0)
 		return;
-	if ((pid = fork()) < 0)
-	{
-		ft_putendl("en dici");
-		exit(2);
-	}
 	if (!pid)
 		fork_child(fd_master, fd_slave, env);
 	system("stty raw -echo");
