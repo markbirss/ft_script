@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include "../libft/includes/libft.h"
 
+# define OPEN_FLAGS O_CREAT | O_WRONLY
 # define OPEN_MODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 typedef struct		s_env {
