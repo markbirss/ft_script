@@ -20,7 +20,6 @@
 # define OPEN_MODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 typedef struct		s_env {
-	char			*bash;
 	char			*filename;
 	char			**command;
 	int				cmd_size;

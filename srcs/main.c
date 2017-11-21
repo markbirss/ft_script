@@ -15,7 +15,6 @@
 
 static void		init_env(t_env **env)
 {
-	(*env)->bash = NULL;
 	(*env)->filename = NULL;
 	(*env)->command = NULL;
 	(*env)->cmd_size = 0;
@@ -43,8 +42,6 @@ static void		free_stuff(t_env *env)
 	}
 	if (env->command)
 		munmap(env->command, env->cmd_size);
-	if (env->bash)
-		munmap(env->bash, ft_strlen(env->bash) + 1);
 	if (env)
 		munmap(env, sizeof(env + 1));
 }
@@ -76,7 +73,9 @@ int				main(int ac, char **av, char **envp)
 	env = ft_mmap(sizeof(t_env) + 1);
 	init_env(&env);
 	ret = get_params(ac, av, &env);
-	get_shell(env, envp);
+	ft_putendl("la");
+	if (env->command == NULL)
+		get_shell(env, envp);
 	if (ret == -1)
 		return (ret);
 	if (ret == ac)

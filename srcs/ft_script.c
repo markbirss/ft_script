@@ -83,31 +83,22 @@ static void			fork_parent(int fd_master, int fd_slave, int fd_file)
 
 static void			fork_child(int fd_master, int fd_slave, t_env *env)
 {
-	int				rc;
-	char			*args[2];
-	struct termios	slave_orig_term_settings;
-	struct termios	new_term_settings;
+	// struct termios	slave_orig_term_settings;
+	// struct termios	new_term_settings;
 
 	close(fd_master);
-	rc = tcgetattr(fd_slave, &slave_orig_term_settings);
-	new_term_settings = slave_orig_term_settings;
-	cfmakeraw(&new_term_settings);
-	tcsetattr(fd_slave, TCSANOW, &new_term_settings);
-	close(0);
-	close(1);
-	close(2);
-	dup(fd_slave);
-	dup(fd_slave);
-	dup(fd_slave);
+	// rc = tcgetattr(fd_slave, &slave_orig_term_settings);//TODO recode
+	// new_term_settings = slave_orig_term_settings;
+	// cfmakeraw(&new_term_settings);
+	// tcsetattr(fd_slave, TCSANOW, &new_term_settings);
+	dup2(fd_slave, 0);
+	dup2(fd_slave, 1);
+	dup2(fd_slave, 2);
 	close(fd_slave);
 	setsid();
 	ioctl(0, TIOCSCTTY, 1);
-	args[0] = "zsh";
-	args[1] = NULL;
-	if (env->command == NULL)
-		rc = execvp(env->bash, args);
-	else
-		rc = execvp(env->command[0], env->command);
+	if (env->command != NULL)
+		execvp(env->command[0], env->command);
 }
 
 void				ft_script(t_env *env)
@@ -117,9 +108,9 @@ void				ft_script(t_env *env)
 	int				fd_file;
 
 	if (env->opt_a == 1)
-		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_APPEND, OPEN_MODE);
+		fd_file = open(env->filename, OPEN_FLAGS | O_APPEND, OPEN_MODE);
 	else
-		fd_file = open(env->filename, O_CREAT | O_WRONLY | O_TRUNC, OPEN_MODE);
+		fd_file = open(env->filename, OPEN_FLAGS | O_TRUNC, OPEN_MODE);
 	if (create_pty(&fd_master, &fd_slave) == -1)
 		return ;
 	if (!fd_file || !fd_master || !fd_slave)
