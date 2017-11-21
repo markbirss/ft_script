@@ -73,7 +73,6 @@ int				main(int ac, char **av, char **envp)
 	env = ft_mmap(sizeof(t_env) + 1);
 	init_env(&env);
 	ret = get_params(ac, av, &env);
-	ft_putendl("la");
 	if (env->command == NULL)
 		get_shell(env, envp);
 	if (ret == -1)
