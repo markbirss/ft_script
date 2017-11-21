@@ -20,57 +20,10 @@
 #include <termios.h>
 #include <utmp.h>
 
-// static void test(int fdm, int fds, int fdf, t_env *env)
-// {
-// 	int pid;
-// 	int i;
-// 	fd_set set;
-// 	char buf[64];
-
-// 	if ((pid = fork()) < 0)
-// 		exit(2);
-// 	if (!pid)
-// 	{
-// 		close(fdm);
-// 		dup2(fds, 0);
-// 		dup2(fds, 1);
-// 		dup2(fds, 2);
-// 		execl(env->command[0], env->command[0]);
-// 		exit(3);
-// 	}
-// 	/* father: copy stdin/out to/from master */
-// 	close(fds);
-// 	system("stty raw -echo");//avoid echo command
-// 	FD_ZERO(&set);
-// 	while (waitpid(pid, &i, WNOHANG) != pid)
-// 	{
-// 		FD_SET(0, &set);
-// 		FD_SET(fdm, &set);
-// 		select(fdm + 1, &set, NULL, NULL, NULL);
-// 		if (FD_ISSET(0, &set))
-// 		{
-// 			i = read(0, buf, 64);
-// 			if (i > 0)
-// 				write(fdm, buf, i);
-// 		}
-// 		if (FD_ISSET(fdm, &set))
-// 		{
-// 			i = read(fdm, buf, 64);
-// 			if (i > 0)
-// 			{
-// 				write(1, buf, i);
-// 				write(fdf, buf, i);
-// 			}
-// 		}
-// 	}
-// 	system("stty sane");
-// 	exit(0);
-// }
-
-static int			read_master(int fd_master, int fd_file, fd_set fd_in)
+static int read_master(int fd_master, int fd_file, fd_set fd_in)
 {
-	int				rc;
-	char			input[150];
+	int rc;
+	char input[150];
 
 	if (FD_ISSET(fd_master, &fd_in))
 	{
@@ -86,10 +39,10 @@ static int			read_master(int fd_master, int fd_file, fd_set fd_in)
 	return (0);
 }
 
-static int			read_user(int fd_master, fd_set fd_in)
+static int read_user(int fd_master, fd_set fd_in)
 {
-	int				rc;
-	char			input[150];
+	int rc;
+	char input[150];
 
 	if (FD_ISSET(0, &fd_in))
 	{
@@ -105,33 +58,27 @@ static int			read_user(int fd_master, fd_set fd_in)
 	return (0);
 }
 
-static void			fork_parent(int fd_master, int fd_slave, int fd_file)
+static void fork_parent(int fd_master, int fd_file)
 {
-	int				rc;
-	fd_set			fd_in;
+	int rc;
+	fd_set fd_in;
 
-	system("stty raw -echo");//avoid echo command
-	close(fd_slave);
-	while (42)
+	FD_ZERO(&fd_in);
+	FD_SET(0, &fd_in);
+	FD_SET(fd_master, &fd_in);
+	rc = select(fd_master + 1, &fd_in, NULL, NULL, NULL);
+	if (rc == -1)
+		return;
+	else if (rc > 0)
 	{
-		FD_ZERO(&fd_in);
-		FD_SET(0, &fd_in);
-		FD_SET(fd_master, &fd_in);
-		rc = select(fd_master + 1, &fd_in, NULL, NULL, NULL);
-		if (rc == -1)
-			return ;
-		else if (rc > 0)
-		{
-			if (read_user(fd_master, fd_in) == -1)
-				return ;
-			if (read_master(fd_master, fd_file, fd_in) == -1)
-				return ;
-		}
+		if (read_user(fd_master, fd_in) == -1)
+			return;
+		if (read_master(fd_master, fd_file, fd_in) == -1)
+			return;
 	}
-	system("stty sane");
 }
 
-static void			fork_child(int fd_master, int fd_slave, t_env *env)
+static void fork_child(int fd_master, int fd_slave, t_env *env)
 {
 	close(fd_master);
 	dup2(fd_slave, 0);
@@ -149,6 +96,8 @@ void ft_script(t_env *env)
 	int fd_master;
 	int fd_slave;
 	int fd_file;
+	int pid;
+	int i;
 
 	if (env->opt_a == 1)
 		fd_file = open(env->filename, OPEN_FLAGS | O_APPEND, OPEN_MODE);
@@ -158,10 +107,17 @@ void ft_script(t_env *env)
 		return;
 	if (!fd_file || !fd_master || !fd_slave)
 		return;
-	if (fork())
-		fork_parent(fd_master, fd_slave, fd_file);
-	else
+	if ((pid = fork()) < 0)
+	{
+		ft_putendl("en dici");
+		exit(2);
+	}
+	if (!pid)
 		fork_child(fd_master, fd_slave, env);
-	// test(fd_master, fd_slave, fd_file, env);
+	system("stty raw -echo");
+	close(fd_slave);
+	while (waitpid(pid, &i, WNOHANG) != pid)
+		fork_parent(fd_master, fd_file);
+	system("stty sane");
 	close(fd_file);
 }
