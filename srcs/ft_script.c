@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:51:09 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/22 14:53:39 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 16:56:13 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,5 @@ void			ft_script(int fd_file, t_env *env)
 	close(fd_slave);
 	while (waitpid(pid, &i, WNOHANG) != pid)
 		fork_parent(fd_master, fd_file);
+	ft_tcsetattr(0, &env->saved_term);
 }
