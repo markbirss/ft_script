@@ -14,12 +14,14 @@
 # define FT_SCRIPT_H
 
 # include <stdlib.h>
+# include <termios.h>
 # include "../libft/includes/libft.h"
 
 # define OPEN_FLAGS O_CREAT | O_WRONLY
 # define OPEN_MODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 typedef struct		s_env {
+	struct termios	saved_term;
 	char			*filename;
 	char			**command;
 	int				cmd_size;
@@ -43,5 +45,8 @@ int					ft_posix_openpt(int flags);
 char				*ft_ptsname(int fd);
 int					ft_grantpt(int fd);
 int					ft_unlockpt(int fd);
+void        		set_raw_mode(t_env *env);
+int					ft_tcsetattr(int fd, struct termios *t);
+int					ft_tcgetattr(int fd, struct termios *t);
 
 #endif

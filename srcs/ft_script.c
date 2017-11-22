@@ -80,6 +80,8 @@ static void fork_parent(int fd_master, int fd_file)
 
 static void fork_child(int fd_master, int fd_slave, t_env *env)
 {
+	extern char **environ;
+
 	close(fd_master);
 	dup2(fd_slave, 0);
 	dup2(fd_slave, 1);
@@ -88,7 +90,7 @@ static void fork_child(int fd_master, int fd_slave, t_env *env)
 	setsid();
 	ioctl(0, TIOCSCTTY, 1);
 	if (env->command != NULL)
-		execve(env->command[0], env->command, NULL);
+		execve(env->command[0], env->command, environ);
 }
 
 void ft_script(t_env *env)
@@ -109,10 +111,9 @@ void ft_script(t_env *env)
 		return;
 	if (!pid)
 		fork_child(fd_master, fd_slave, env);
-	system("stty raw -echo");
+	set_raw_mode(env);
 	close(fd_slave);
 	while (waitpid(pid, &i, WNOHANG) != pid)
 		fork_parent(fd_master, fd_file);
-	system("stty sane");
 	close(fd_file);
 }
