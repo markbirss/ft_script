@@ -21,9 +21,6 @@
 # define OPEN_MODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 typedef struct		s_env {
-	struct termios	saved_term;
-	char			*filename;
-	char			**command;
 	int				cmd_size;
 	int				opt_a;
 	int				opt_d;
@@ -33,6 +30,10 @@ typedef struct		s_env {
 	int				opt_r;
 	int				opt_k;
 	int				opt_t;
+	char			**path;
+	char			*filename;
+	char			**command;
+	struct termios	saved_term;
 }					t_env;
 
 void				ft_script(int fd_file, t_env *env);
@@ -49,5 +50,6 @@ int					ft_unlockpt(int fd);
 void				set_raw_mode(t_env *env);
 int					ft_tcsetattr(int fd, struct termios *t);
 int					ft_tcgetattr(int fd, struct termios *t);
+void	get_bin_path(t_env *env, char **envp);
 
 #endif

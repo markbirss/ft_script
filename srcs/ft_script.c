@@ -80,7 +80,9 @@ static void		fork_parent(int fd_master, int fd_file)
 static void		fork_child(int fd_master, int fd_slave, t_env *env)
 {
 	extern char	**environ;
+	int			i;
 
+	i = 0;
 	close(fd_master);
 	dup2(fd_slave, 0);
 	dup2(fd_slave, 1);
@@ -88,10 +90,17 @@ static void		fork_child(int fd_master, int fd_slave, t_env *env)
 	close(fd_slave);
 	setsid();
 	ioctl(0, TIOCSCTTY, 1);
-	ft_putendl(env->command[0]);
+	if (env->path && env->command != NULL)
+	{
+		while (env->path[i])
+		{
+			execve(env->path[i], env->command, environ);
+			i++;
+		}
+	}
 	if (env->command != NULL)
-		if (execve(env->command[0], env->command, environ) == -1)
-			exit(-1);
+		execve(env->command[0], env->command, environ);
+	exit(-1);
 }
 
 void			ft_script(int fd_file, t_env *env)

@@ -16,8 +16,6 @@
 
 static void		init_env(t_env **env)
 {
-	(*env)->filename = NULL;
-	(*env)->command = NULL;
 	(*env)->cmd_size = 0;
 	(*env)->opt_a = 0;
 	(*env)->opt_d = 0;
@@ -27,6 +25,9 @@ static void		init_env(t_env **env)
 	(*env)->opt_r = 0;
 	(*env)->opt_k = 0;
 	(*env)->opt_t = 0;
+	(*env)->path = NULL;
+	(*env)->filename = NULL;
+	(*env)->command = NULL;
 }
 
 static void		free_stuff(t_env *env)
@@ -87,6 +88,8 @@ int				main(int ac, char **av, char **envp)
 	ret = get_params(ac, av, env);
 	if (env->command == NULL)
 		get_shell(env, envp);
+	else
+		get_bin_path(env, envp);
 	if (ret == -1)
 		return (ret);
 	if (ret == ac)
