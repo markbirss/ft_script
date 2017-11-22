@@ -3,15 +3,16 @@
 
 TODO:
      
-     - Les commandes tappées par l'utilisateur sont repétées, ça ne devrait pas
+     - Les commandes tappées par l'utilisateur sont repétées, ça ne devrait pas |OK|
      
-     - Le "ctrl-c" doit quitter le programme en cours mais pas script
+     - Le control-c doit quitter le programme en cours mais pas script |OK|
      
-     - La deletion de caractère doit apparaitre dans le fichier
+     - La deletion de caractère doit apparaitre dans le fichier |OK|
      
      - Un diff des fichiers générés par l'original et le ft doivent être identique exepté les timestamp
      
      - Les MSG_START && MSG_END apparaissent dans le fichier et sont accompagné d'un timestamp
+     
 
 DESCRIPTION
      The script utility makes a typescript of everything printed on your ter-
