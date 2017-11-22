@@ -5,13 +5,13 @@ TODO:
      
      - Les commandes tappées par l'utilisateur sont repétées, ça ne devrait pas |OK|
      
-     - Le control-c doit quitter le programme en cours mais pas script |OK|
+     - Le control c doit quitter le programme en cours mais pas ft_script |OK|
      
      - La deletion de caractère doit apparaitre dans le fichier |OK|
      
      - Un diff des fichiers générés par l'original et le ft doivent être identique exepté les timestamp
      
-     - Les MSG_START && MSG_END apparaissent dans le fichier et sont accompagné d'un timestamp
+     - Les MSG_START && MSG_END apparaissent dans le fichier et sont accompagné d'un timestamp |OK|
      
 
 DESCRIPTION
