@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:48:34 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/22 16:46:56 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 17:17:07 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int				main(int ac, char **av, char **envp)
 	fd_file = open_file(env);
 	if (env->opt_q == 0)
 		msg_start(env, fd_file);
-	ft_script(fd_file, env);
+	ft_script(fd_file, envp, env);
 	if (env->opt_q == 0)
 		msg_end(env, fd_file);
 	free_stuff(env);

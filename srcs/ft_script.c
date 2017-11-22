@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:51:09 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/22 16:56:13 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 17:22:03 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ static void		fork_parent(int fd_master, int fd_file)
 	}
 }
 
-static void		fork_child(int fd_master, int fd_slave, t_env *env)
+static void		fork_child(int fd_master, int fd_slave, char **envp, t_env *env)
 {
-	extern char	**environ;
 	int			i;
 
 	i = 0;
@@ -94,16 +93,16 @@ static void		fork_child(int fd_master, int fd_slave, t_env *env)
 	{
 		while (env->path[i])
 		{
-			execve(env->path[i], env->command, environ);
+			execve(env->path[i], env->command, envp);
 			i++;
 		}
 	}
 	if (env->command != NULL)
-		execve(env->command[0], env->command, environ);
+		execve(env->command[0], env->command, envp);
 	exit(-1);
 }
 
-void			ft_script(int fd_file, t_env *env)
+void			ft_script(int fd_file, char **envp, t_env *env)
 {
 	int			fd_master;
 	int			fd_slave;
@@ -115,7 +114,7 @@ void			ft_script(int fd_file, t_env *env)
 	if (!fd_file || !fd_master || !fd_slave || (pid = fork()) < 0)
 		return ;
 	if (!pid)
-		fork_child(fd_master, fd_slave, env);
+		fork_child(fd_master, fd_slave, envp, env);
 	set_raw_mode(env);
 	close(fd_slave);
 	while (waitpid(pid, &i, WNOHANG) != pid)
