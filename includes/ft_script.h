@@ -35,7 +35,8 @@ typedef struct		s_env {
 	int				opt_t;
 }					t_env;
 
-void				ft_script(t_env *env);
+void				ft_script(int fd_file, t_env *env);
+int    				 open_file(t_env *env);
 int					get_params(int ac, char **av, t_env **env);
 void				*ft_mmap(int size);
 char				*ft_mmap_strdup(const char *s1);

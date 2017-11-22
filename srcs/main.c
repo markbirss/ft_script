@@ -12,6 +12,7 @@
 
 #include "../includes/ft_script.h"
 #include <sys/mman.h>
+#include <time.h>
 
 static void		init_env(t_env **env)
 {
@@ -46,18 +47,28 @@ static void		free_stuff(t_env *env)
 		munmap(env, sizeof(env + 1));
 }
 
-static void		msg_start(t_env *env)
+static void		msg_start(t_env *env, int fd_file)
 {
+	time_t curtime;
+	
+	time(&curtime);
 	ft_putstr("Script started, output file is ");
+	ft_putstr_fd("Script started on ", fd_file);
+	ft_putstr_fd(ctime(&curtime), fd_file);
 	if (env->filename != NULL)
 		ft_putendl(env->filename);
 	else
 		ft_putendl("typescript");
 }
 
-static void		msg_end(t_env *env)
+static void		msg_end(t_env *env, int fd_file)
 {
+	time_t curtime;
+	
+	time(&curtime);
 	ft_putstr("Script done, output file is ");
+	ft_putstr_fd("\nScript done on ", fd_file);
+	ft_putstr_fd(ctime(&curtime), fd_file);
 	if (env->filename != NULL)
 		ft_putendl(env->filename);
 	else
@@ -68,6 +79,7 @@ int				main(int ac, char **av, char **envp)
 {
 	t_env		*env;
 	int			ret;
+	int			fd_file;
 
 	ret = 0;
 	env = ft_mmap(sizeof(t_env) + 1);
@@ -79,11 +91,13 @@ int				main(int ac, char **av, char **envp)
 		return (ret);
 	if (ret == ac)
 		ret = 0;
+	fd_file = open_file(env);
 	if (env->opt_q == 0)
-		msg_start(env);
-	ft_script(env);
+		msg_start(env, fd_file);
+	ft_script(fd_file, env);
 	if (env->opt_q == 0)
-		msg_end(env);
+		msg_end(env, fd_file);
 	free_stuff(env);
+	close(fd_file);
 	return (0);
 }

@@ -13,7 +13,6 @@
 #include "../includes/ft_script.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 #include <sys/select.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -93,18 +92,13 @@ static void fork_child(int fd_master, int fd_slave, t_env *env)
 		execve(env->command[0], env->command, environ);
 }
 
-void ft_script(t_env *env)
+void ft_script(int fd_file, t_env *env)
 {
 	int fd_master;
 	int fd_slave;
-	int fd_file;
 	int pid;
 	int i;
 
-	if (env->opt_a == 1)
-		fd_file = open(env->filename, OPEN_FLAGS | O_APPEND, OPEN_MODE);
-	else
-		fd_file = open(env->filename, OPEN_FLAGS | O_TRUNC, OPEN_MODE);
 	if (create_pty(&fd_master, &fd_slave) == -1)
 		return;
 	if (!fd_file || !fd_master || !fd_slave || (pid = fork()) < 0)
@@ -115,5 +109,4 @@ void ft_script(t_env *env)
 	close(fd_slave);
 	while (waitpid(pid, &i, WNOHANG) != pid)
 		fork_parent(fd_master, fd_file);
-	close(fd_file);
 }
