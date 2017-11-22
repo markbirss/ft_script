@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:48:34 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/17 13:50:15 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 14:58:52 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void		free_stuff(t_env *env)
 static void		msg_start(t_env *env, int fd_file)
 {
 	time_t curtime;
-	
+
 	time(&curtime);
 	ft_putstr("Script started, output file is ");
 	ft_putstr_fd("Script started on ", fd_file);
@@ -64,9 +64,9 @@ static void		msg_start(t_env *env, int fd_file)
 static void		msg_end(t_env *env, int fd_file)
 {
 	time_t curtime;
-	
+
 	time(&curtime);
-	ft_putstr("Script done, output file is ");
+	ft_putstr("\nScript done, output file is ");
 	ft_putstr_fd("\nScript done on ", fd_file);
 	ft_putstr_fd(ctime(&curtime), fd_file);
 	if (env->filename != NULL)

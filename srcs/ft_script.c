@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:51:09 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/17 13:56:52 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 14:53:39 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 #include <termios.h>
 #include <utmp.h>
 
-static int read_master(int fd_master, int fd_file, fd_set fd_in)
+static int		read_master(int fd_master, int fd_file, fd_set fd_in)
 {
-	int rc;
-	char input[150];
+	int			rc;
+	char		input[150];
 
 	if (FD_ISSET(fd_master, &fd_in))
 	{
@@ -38,10 +38,10 @@ static int read_master(int fd_master, int fd_file, fd_set fd_in)
 	return (0);
 }
 
-static int read_user(int fd_master, fd_set fd_in)
+static int		read_user(int fd_master, fd_set fd_in)
 {
-	int rc;
-	char input[150];
+	int			rc;
+	char		input[150];
 
 	if (FD_ISSET(0, &fd_in))
 	{
@@ -57,29 +57,29 @@ static int read_user(int fd_master, fd_set fd_in)
 	return (0);
 }
 
-static void fork_parent(int fd_master, int fd_file)
+static void		fork_parent(int fd_master, int fd_file)
 {
-	int rc;
-	fd_set fd_in;
+	int			rc;
+	fd_set		fd_in;
 
 	FD_ZERO(&fd_in);
 	FD_SET(0, &fd_in);
 	FD_SET(fd_master, &fd_in);
 	rc = select(fd_master + 1, &fd_in, NULL, NULL, NULL);
 	if (rc == -1)
-		return;
+		return ;
 	else if (rc > 0)
 	{
 		if (read_user(fd_master, fd_in) == -1)
-			return;
+			return ;
 		if (read_master(fd_master, fd_file, fd_in) == -1)
-			return;
+			return ;
 	}
 }
 
-static void fork_child(int fd_master, int fd_slave, t_env *env)
+static void		fork_child(int fd_master, int fd_slave, t_env *env)
 {
-	extern char **environ;
+	extern char	**environ;
 
 	close(fd_master);
 	dup2(fd_slave, 0);
@@ -92,17 +92,17 @@ static void fork_child(int fd_master, int fd_slave, t_env *env)
 		execve(env->command[0], env->command, environ);
 }
 
-void ft_script(int fd_file, t_env *env)
+void			ft_script(int fd_file, t_env *env)
 {
-	int fd_master;
-	int fd_slave;
-	int pid;
-	int i;
+	int			fd_master;
+	int			fd_slave;
+	int			pid;
+	int			i;
 
 	if (create_pty(&fd_master, &fd_slave) == -1)
-		return;
+		return ;
 	if (!fd_file || !fd_master || !fd_slave || (pid = fork()) < 0)
-		return;
+		return ;
 	if (!pid)
 		fork_child(fd_master, fd_slave, env);
 	set_raw_mode(env);
