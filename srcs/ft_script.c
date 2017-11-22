@@ -88,8 +88,10 @@ static void		fork_child(int fd_master, int fd_slave, t_env *env)
 	close(fd_slave);
 	setsid();
 	ioctl(0, TIOCSCTTY, 1);
+	ft_putendl(env->command[0]);
 	if (env->command != NULL)
-		execve(env->command[0], env->command, environ);
+		if (execve(env->command[0], env->command, environ) == -1)
+			exit(-1);
 }
 
 void			ft_script(int fd_file, t_env *env)

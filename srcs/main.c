@@ -84,7 +84,7 @@ int				main(int ac, char **av, char **envp)
 	ret = 0;
 	env = ft_mmap(sizeof(t_env) + 1);
 	init_env(&env);
-	ret = get_params(ac, av, &env);
+	ret = get_params(ac, av, env);
 	if (env->command == NULL)
 		get_shell(env, envp);
 	if (ret == -1)

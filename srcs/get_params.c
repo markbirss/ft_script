@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:47:27 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/22 14:58:55 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 15:04:03 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void		invalid_param(char c)
 	ft_putendl("usage: script [-adpqr] [file [command ...]]");
 }
 
-static int		parse_simple_param(char *s, t_env **env)
+static int		parse_simple_param(char *s, t_env *env)
 {
 	int			i;
 
@@ -28,17 +28,17 @@ static int		parse_simple_param(char *s, t_env **env)
 	while (s && s[i])
 	{
 		if (s[i] == 'a')
-			(*env)->opt_a = 1;
+			env->opt_a = 1;
 		else if (s[i] == 'd')
-			(*env)->opt_d = 1;
+			env->opt_d = 1;
 		else if (s[i] == 'F')
-			(*env)->opt_f = 1;
+			env->opt_f = 1;
 		else if (s[i] == 'p')
-			(*env)->opt_p = 1;
+			env->opt_p = 1;
 		else if (s[i] == 'q')
-			(*env)->opt_q = 1;
+			env->opt_q = 1;
 		else if (s[i] == 'r')
-			(*env)->opt_r = 1;
+			env->opt_r = 1;
 		else
 		{
 			invalid_param(s[i]);
@@ -49,7 +49,23 @@ static int		parse_simple_param(char *s, t_env **env)
 	return (1);
 }
 
-int				get_params(int ac, char **av, t_env **env)
+static void		add_command(t_env *env, int ac, char **av, int i)
+{
+	int			y;
+
+	y = 0;
+	env->command = ft_mmap(sizeof(char*) * (ac - i + 1));
+	env->cmd_size = ac - i + 1;
+	while (i < ac)
+	{
+		env->command[y] = ft_mmap_strdup(av[i]);
+		i++;
+		y++;
+	}
+	env->command[y] = NULL;
+}
+
+int				get_params(int ac, char **av, t_env *env)
 {
 	int			i;
 	int			y;
@@ -64,22 +80,12 @@ int				get_params(int ac, char **av, t_env **env)
 	}
 	if (av[i] && ft_strlen(av[i]) > 0 && av[i][0] != '-')
 	{
-		(*env)->filename = ft_mmap_strdup(av[i]);
+		env->filename = ft_mmap_strdup(av[i]);
 		i++;
 	}
 	else if (ac == i)
-		(*env)->filename = ft_mmap_strdup("typescript");
+		env->filename = ft_mmap_strdup("typescript");
 	if (i < ac)
-	{
-		(*env)->command = ft_mmap(sizeof(char*) * (ac - i + 1));
-		(*env)->cmd_size = ac - i + 1;
-		while (i < ac)
-		{
-			(*env)->command[y] = ft_mmap_strdup(av[i]);
-			i++;
-			y++;
-		}
-		(*env)->command[y] = NULL;
-	}
+		add_command(env, ac, av, i);
 	return (i);
 }
