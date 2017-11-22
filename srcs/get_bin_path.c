@@ -6,7 +6,7 @@
 /*   By: mfrisby <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 16:45:26 by mfrisby           #+#    #+#             */
-/*   Updated: 2017/11/22 16:46:31 by mfrisby          ###   ########.fr       */
+/*   Updated: 2017/11/22 16:53:11 by mfrisby          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static int			count_path(char *ret)
 
 static int			ret_copy(char *ret, int c, t_env *env)
 {
-	int i;
-	int y;
-	int e;
+	int				i;
+	int				y;
+	int				e;
 
 	i = 0;
 	y = 0;
@@ -54,13 +54,14 @@ static int			ret_copy(char *ret, int c, t_env *env)
 		y++;
 		e++;
 	}
+	env->path[c][e] = '\0';
 	return (i);
 }
 
 static void			add_path(t_env *env, char *ret, int count)
 {
-	int i;
-	int c;
+	int				i;
+	int				c;
 
 	c = 0;
 	i = 0;
@@ -88,6 +89,7 @@ void				get_bin_path(t_env *env, char **envp)
 				ret++;
 			ret++;
 			count = count_path(ret);
+			env->path_size = count + 1;
 			env->path = ft_mmap(sizeof(char*) * count + 1);
 			add_path(env, ret, count);
 			env->command[count + 1] = NULL;

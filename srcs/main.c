@@ -17,6 +17,7 @@
 static void		init_env(t_env **env)
 {
 	(*env)->cmd_size = 0;
+	(*env)->path_size = 0;
 	(*env)->opt_a = 0;
 	(*env)->opt_d = 0;
 	(*env)->opt_f = 0;
@@ -42,6 +43,14 @@ static void		free_stuff(t_env *env)
 		munmap(env->command[i], ft_strlen(env->command[i] + 1));
 		i++;
 	}
+	i = 0;
+	while (env->path && env->path[i])
+	{
+		munmap(env->path[i], ft_strlen(env->path[i]));
+		i++;
+	}
+	if (env->path)
+		munmap(env->path, env->path_size);
 	if (env->command)
 		munmap(env->command, env->cmd_size);
 	if (env)
